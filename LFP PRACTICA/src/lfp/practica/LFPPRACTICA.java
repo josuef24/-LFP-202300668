@@ -4,6 +4,10 @@ package lfp.practica;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
+import models.Personaje;
+import utils.LectorArchivo;
+
 /**
  *
  * @author jmfuente
@@ -17,13 +21,15 @@ public class LFPPRACTICA {
         Scanner scanner = new Scanner(System.in);
         boolean salir = false;
         
+        ArrayList<Personaje> personajes = new ArrayList<>();
+        
         while (!salir) {
             System.out.println("\n--- Menu del Torneo ---");
             System.out.println("1. Cargar archivo");
             System.out.println("2. Jugar");
             System.out.println("3. Generar reporte de mayor ataque");
             System.out.println("4. Generar reporte de mayor defensa");
-            System.out.println("5. Mostrar información del desarrollador");
+            System.out.println("5. Mostrar informacion del desarrollador");
             System.out.println("6. Salir");
             System.out.print("Elige una opcion: ");
             
@@ -32,8 +38,12 @@ public class LFPPRACTICA {
             
             switch (opcion) {
                 case 1:
-                    System.out.println("Cargando archivo...");
-                    // Lógica para cargar el archivo
+                    
+                    System.out.print("Ingresa la ruta del archivo (.lfp): ");
+                    String ruta = scanner.nextLine();
+                    personajes = LectorArchivo.cargarPersonajes(ruta);
+                    System.out.println("Se han cargado " + personajes.size() + " personajes.");
+                    
                     break;
                 case 2:
                     System.out.println("Iniciando el juego...");
@@ -57,7 +67,7 @@ public class LFPPRACTICA {
                     System.out.println("Saliendo del programa...");
                     break;
                 default:
-                    System.out.println("Opcion no válida, intenta de nuevo.");
+                    System.out.println("Opcion no valida, intenta de nuevo.");
                     break;
             }
         }
