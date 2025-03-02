@@ -6,7 +6,9 @@ import java.util.Scanner;
 
 
 import models.Personaje;
+import models.Torneo;
 import utils.LectorArchivo;
+import utils.ReporteHTML;
 
 /**
  *
@@ -24,12 +26,12 @@ public class LFPPRACTICA {
         ArrayList<Personaje> personajes = new ArrayList<>();
         
         while (!salir) {
-            System.out.println("\n--- Menu del Torneo ---");
+            System.out.println("\n----------------- Menu -----------------");
             System.out.println("1. Cargar archivo");
             System.out.println("2. Jugar");
-            System.out.println("3. Generar reporte de mayor ataque");
-            System.out.println("4. Generar reporte de mayor defensa");
-            System.out.println("5. Mostrar informacion del desarrollador");
+            System.out.println("3. Reporte de mayor ataque");
+            System.out.println("4. Reporte de mayor defensa");
+            System.out.println("5. Informacion del desarrollador");
             System.out.println("6. Salir");
             System.out.print("Elige una opcion: ");
             
@@ -46,16 +48,36 @@ public class LFPPRACTICA {
                     
                     break;
                 case 2:
-                    System.out.println("Iniciando el juego...");
-                    // Lógica para iniciar el juego
+                    
+                    if (personajes.size() < 2) {
+                        System.out.println("No hay suficientes personajes para iniciar el torneo, deben ser mass de 2");
+                    } else {
+                        System.out.println("¡Comienza el torneo!");
+                        Torneo.iniciarTorneo(personajes);
+                    }
+                    
                     break;
                 case 3:
-                    System.out.println("Generando reporte de mayor ataque...");
-                    // Lógica para generar el reporte
+                    
+                    if (personajes.isEmpty()) {
+                        System.out.println("No hay personajes cargados para generar el reporte.");
+                    } else {
+                        String archivoAtaque = "reporte_mayor_ataque.html";
+                        ReporteHTML.generarReporteMayorAtaque(personajes, archivoAtaque);
+                        System.out.println("Reporte de mayor ataque generado en carpeta 'reportes': " + archivoAtaque);
+                    }
+                    
                     break;
                 case 4:
-                    System.out.println("Generando reporte de mayor ataque...");
-                    // Lógica para mostrar la información
+                    
+                     if (personajes.isEmpty()) {
+                        System.out.println("No hay personajes cargados para generar el reporte.");
+                    } else {
+                        String archivoDefensa = "reporte_mayor_defensa.html";
+                        ReporteHTML.generarReporteMayorDefensa(personajes, archivoDefensa);
+                        System.out.println("Reporte de mayor defensa generado en carpeta 'reportes': " + archivoDefensa);
+                    }
+                    
                     break;
                 case 5:
                     System.out.println("Informacion del desarrollador:");
@@ -64,7 +86,7 @@ public class LFPPRACTICA {
                     break;
                 case 6:
                     salir = true;
-                    System.out.println("Saliendo del programa...");
+                    System.out.println("Gracias por jugar");
                     break;
                 default:
                     System.out.println("Opcion no valida, intenta de nuevo.");
