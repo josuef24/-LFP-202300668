@@ -4,19 +4,11 @@
  */
 package model;
 
-/**
- * Representa un estado en un Autómata Finito Determinista (AFD)
- * @author jmfuente
- */
 public class Estado {
     private final String nombre;
     private boolean esFinal;
     private boolean esInicial;
 
-    /**
-     * Constructor principal
-     * @param nombre Nombre identificador del estado (no puede ser nulo o vacío)
-     */
     public Estado(String nombre) {
         if (nombre == null || nombre.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del estado no puede ser nulo o vacío");
@@ -54,18 +46,18 @@ public class Estado {
         this.esInicial = esInicial;
     }
 
-    /**
-     * Representación textual del estado
-     */
+   
+     //Representación textual del estado
+
     @Override
     public String toString() {
         return String.format("Estado{nombre='%s', inicial=%s, final=%s}", 
                nombre, esInicial, esFinal);
     }
 
-    /**
-     * Comparación basada en el nombre del estado
-     */
+    
+     // Comparación basada en el nombre del estado
+    
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -74,9 +66,9 @@ public class Estado {
         return nombre.equals(estado.nombre);
     }
 
-    /**
-     * Hash code basado en el nombre del estado
-     */
+    
+    //Hash code basado en el nombre del estado
+ 
     @Override
     public int hashCode() {
         return nombre.hashCode();

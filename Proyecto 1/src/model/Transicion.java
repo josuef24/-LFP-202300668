@@ -6,10 +6,6 @@ package model;
 
 import java.util.Objects;
 
-/**
- * Representa una transición entre estados en un Autómata Finito Determinista (AFD)
- * @author jmfuente
- */
 public class Transicion {
     private final String estadoOrigen;
     private final String simbolo;
@@ -51,17 +47,14 @@ public class Transicion {
         return estadoDestino;
     }
 
-    /**
-     * Representación textual de la transición
-     */
+      //Representación textual de la transición
     @Override
     public String toString() {
         return String.format("%s --%s--> %s", estadoOrigen, simbolo, estadoDestino);
     }
 
-    /**
-     * Comparación basada en estado origen, símbolo y estado destino
-     */
+     //Comparación basada en estado origen, símbolo y estado destino
+  
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

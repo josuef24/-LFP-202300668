@@ -7,10 +7,6 @@ package model;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Representa un Autómata Finito Determinista (AFD)
- * @author jmfuente
- */
 public class AFD {
     private final String nombre;
     private String descripcion;
@@ -20,10 +16,6 @@ public class AFD {
     private final Set<String> estadosFinales;
     private final Map<String, Map<String, String>> transiciones;
 
-    /**
-     * Constructor principal
-     * @param nombre Nombre identificador del AFD
-     */
     public AFD(String nombre) {
         this.nombre = Objects.requireNonNull(nombre, "El nombre del AFD no puede ser nulo");
         this.estados = new LinkedHashSet<>(); // Mantiene orden de inserción
