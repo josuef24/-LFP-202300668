@@ -1,0 +1,4 @@
+digraph "Otross mundo" {
+    node [style=filled];
+    "IslaMisteriosa" [shape=invtriangle, fillcolor=lightgoldenrod, pos="400,0!"];
+}

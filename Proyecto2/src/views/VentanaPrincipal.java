@@ -1,8 +1,10 @@
 package views;
 
+import java.awt.Image;
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -11,6 +13,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author jmfuente
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
+
+    private List<models.Mundo> mundosAnalizados = new ArrayList<>();
 
     /**
      * Creates new form VentanaPrincipal
@@ -50,6 +54,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         btnGenerarReportes.setText("Generar reportes");
+        btnGenerarReportes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarReportesActionPerformed(evt);
+            }
+        });
 
         comboMapas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -146,6 +155,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         limpiarArea();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
+    private void btnGenerarReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarReportesActionPerformed
+        generarReportes();
+    }//GEN-LAST:event_btnGenerarReportesActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -214,7 +227,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void procesarEntradaYMostrarMundos() {
         String texto = txtAreaTexto.getText();
 
-        // 1. Analizar léxicamente
         parser.AnalizadorLexico analizadorLex = new parser.AnalizadorLexico(texto);
         analizadorLex.analizar();
 
@@ -226,31 +238,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             return;
         }
 
-        // 2. Analizar sintácticamente
         parser.AnalizadorSintactico analizadorSin = new parser.AnalizadorSintactico(analizadorLex.getTokens());
         analizadorSin.iniciar();
 
-        List<models.Mundo> mundos = analizadorSin.getMundos();
+        mundosAnalizados = analizadorSin.getMundos(); // ← Aquí se guarda lo nuevo
 
-        System.out.println("=== MUNDOS DETECTADOS ===");
-        for (models.Mundo m : mundos) {
-            System.out.println("Mundo: " + m.nombre);
-            System.out.println("Lugares:");
-            for (models.Lugar l : m.lugares) {
-                System.out.println("  - " + l.nombre + " (" + l.tipo + ") en (" + l.x + "," + l.y + ")");
-            }
-            System.out.println("Conexiones:");
-            for (models.Conexion c : m.conexiones) {
-                System.out.println("  - " + c.origen + " → " + c.destino + " con " + c.tipo);
-            }
-            System.out.println("Objetos:");
-            for (models.ObjetoEspecial o : m.objetos) {
-                if (o.lugar != null) {
-                    System.out.println("  - " + o.nombre + " (" + o.tipo + ") en " + o.lugar);
-                } else {
-                    System.out.println("  - " + o.nombre + " (" + o.tipo + ") en (" + o.x + "," + o.y + ")");
-                }
-            }
+        comboMapas.removeAllItems();
+        for (models.Mundo mundo : mundosAnalizados) {
+            comboMapas.addItem(mundo.nombre);
         }
     }
 
@@ -271,24 +266,60 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
     }
 
+    private void generarReportes() {
+        String texto = txtAreaTexto.getText();
+
+        parser.AnalizadorLexico analizador = new parser.AnalizadorLexico(texto);
+        analizador.analizar();
+
+        parser.AnalizadorSintactico analizadorSin = new parser.AnalizadorSintactico(analizador.getTokens());
+        analizadorSin.iniciar();
+
+        List<parser.Token> erroresLexicos = analizador.getErrores();
+        List<parser.Token> erroresSintacticos = analizadorSin.getErroresSintacticos();
+
+        utils.Reporte.generarReporteTokens(analizador.getTokens());
+        utils.Reporte.generarReporteErroresSeparados(erroresLexicos, erroresSintacticos);
+
+        if (!erroresLexicos.isEmpty() || !erroresSintacticos.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Se encontraron errores. No se puede graficar hasta corregirlos.", "Errores detectados", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Reporte generado exitosamente. No se encontraron errores.", "Sin errores", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
     private void generarMapa(String nombreMundo) {
-        // Volver a analizar para obtener el mundo
-        parser.AnalizadorLexico lex = new parser.AnalizadorLexico(txtAreaTexto.getText());
-        lex.analizar();
-        parser.AnalizadorSintactico sin = new parser.AnalizadorSintactico(lex.getTokens());
-        sin.iniciar();
+        models.Mundo mundo = null;
 
-        for (models.Mundo mundo : sin.getMundos()) {
-            if (mundo.nombre.equals(nombreMundo)) {
-                utils.GeneradorMapa.generarArchivoDot(mundo);
-
-                String archivo = "graficos/" + mundo.nombre.replaceAll("[^a-zA-Z0-9_\\-]", "_") + ".png";
-                mostrarImagen(archivo);
-                return;
+        for (models.Mundo m : mundosAnalizados) {
+            if (m.nombre.equals(nombreMundo)) {
+                mundo = m;
+                break;
             }
         }
 
-        lblImagenMapa.setText("No se encontró el mundo para generar el mapa.");
+        if (mundo != null) {
+            utils.GeneradorMapa.generarArchivoDot(mundo);
+            String baseNombre = mundo.nombre.replaceAll("[^a-zA-Z0-9_\\-]", "_");
+            String archivo = "graficos/" + baseNombre + ".png";
+
+            // Forzar recarga real de imagen desde el disco
+            try {
+                Image image = javax.imageio.ImageIO.read(new File(archivo));
+                if (image != null) {
+                    lblImagenMapa.setIcon(new ImageIcon(image));
+                    lblImagenMapa.setText(null);
+                } else {
+                    lblImagenMapa.setText("No se pudo cargar la imagen del mapa.");
+                }
+            } catch (IOException e) {
+                lblImagenMapa.setText("Error al leer la imagen del mapa.");
+                e.printStackTrace();
+            }
+        } else {
+            lblImagenMapa.setText("No se encontró el mundo para generar el mapa.");
+        }
+
     }
 
     public static void main(String args[]) {

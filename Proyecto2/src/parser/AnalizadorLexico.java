@@ -25,6 +25,7 @@ public class AnalizadorLexico {
         while (!estaAlFinal()) {
             char actual = avanzar();
 
+            // Saltar espacios en blanco
             if (Character.isWhitespace(actual)) {
                 if (actual == '\n') {
                     linea++;
@@ -32,6 +33,13 @@ public class AnalizadorLexico {
                 } else {
                     columna++;
                 }
+                continue;
+            }
+
+            // Ignorar líneas que comienzan con @ (errores intencionales o comentarios)
+            if (actual == '@') {
+                errores.add(new Token(TipoToken.ERROR, "@", linea, columna));
+                columna++;
                 continue;
             }
 
@@ -65,7 +73,9 @@ public class AnalizadorLexico {
                         escanearNumero(actual);
                     } else {
                         errores.add(new Token(TipoToken.ERROR, String.valueOf(actual), linea, columna));
+                        columna++;
                     }
+                    break;
             }
         }
 
@@ -106,23 +116,26 @@ public class AnalizadorLexico {
         int inicioCol = columna;
         StringBuilder lexema = new StringBuilder("\"");
 
-        while (!estaAlFinal() && peek() != '"') {
-            char c = avanzar();
-            lexema.append(c);
-            columna++;
+        while (!estaAlFinal()) {
+            char c = peek();
             if (c == '\n') {
-                linea++;
-                columna = 1;
+                break; // cortar si hay salto de línea
             }
+            if (c == '"') {
+                break;
+            }
+
+            lexema.append(avanzar());
+            columna++;
         }
 
-        if (estaAlFinal()) {
+        if (estaAlFinal() || peek() == '\n') {
             errores.add(new Token(TipoToken.ERROR, lexema.toString(), linea, inicioCol));
             return;
         }
 
-        // Agrega cierre de comillas
-        lexema.append(avanzar()); // consume '"'
+        lexema.append(avanzar()); // consume cierre "
+        columna++;
         agregarToken(TipoToken.CADENA, lexema.toString());
     }
 

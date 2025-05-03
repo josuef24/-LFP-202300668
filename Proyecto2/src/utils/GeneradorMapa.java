@@ -23,6 +23,13 @@ public class GeneradorMapa {
             PrintWriter writer = new PrintWriter(rutaDot, "UTF-8");
 
             writer.println("digraph \"" + mundo.nombre + "\" {");
+            writer.println("    layout=neato;");
+            writer.println("    overlap=false;");
+            writer.println("    splines=true;");
+            writer.println("    size=\"8.3 ,8.3\";"); // Tamaño máximo en pulgadas (ancho, alto)
+            writer.println("    dpi=180;");      // Resolución para mejor control de calidad
+            writer.println("    node [style=filled];");
+
             writer.println("    node [style=filled];");
 
             // Lugares
@@ -75,8 +82,6 @@ public class GeneradorMapa {
             System.err.println("Error generando mapa real: " + e.getMessage());
         }
     }
-    
-    
 
     // Métodos para formas y colores
     private static String obtenerFormaLugar(String tipo) {
@@ -89,15 +94,15 @@ public class GeneradorMapa {
                 "octagon";
             case "jungla" ->
                 "parallelogram";
-            case "montaña" ->
+            case "montana" ->
                 "triangle";
             case "pueblo" ->
                 "house";
             case "isla" ->
                 "invtriangle";
-            case "río" ->
+            case "rio" ->
                 "hexagon";
-            case "volcán" ->
+            case "volcan" ->
                 "doublecircle";
             case "pantano" ->
                 "trapezium";
@@ -105,23 +110,33 @@ public class GeneradorMapa {
                 "ellipse";
         };
     }
-    
-    private static String obtenerEmojiObjeto(String tipo) {
-    return switch (tipo.toLowerCase()) {
-        case "tesoro" -> "\uD83C\uDF81";           // 🎁
-        case "llave" -> "\uD83D\uDD11";            // 🔑
-        case "arma" -> "\uD83D\uDDE1\uFE0F";       // 🗡️
-        case "objeto mágico" -> "\u2728";          // ✨
-        case "poción" -> "\u2697\uFE0F";           // ⚗️
-        case "trampa" -> "\uD83D\uDCA3";           // 💣
-        case "libro" -> "\uD83D\uDCD5";            // 📕
-        case "herramienta" -> "\uD83D\uDEE0\uFE0F";// 🛠️
-        case "bandera" -> "\uD83D\uDEA9";          // 🚩
-        case "gema" -> "\uD83D\uDC8E";             // 💎
-        default -> "";
-    };
-}
 
+    private static String obtenerEmojiObjeto(String tipo) {
+        return switch (tipo.toLowerCase()) {
+            case "tesoro" ->
+                "\uD83C\uDF81";
+            case "llave" ->
+                "\uD83D\uDD11";
+            case "arma" ->
+                "\uD83D\uDDE1\uFE0F";
+            case "objeto magico" ->
+                "\u2728";
+            case "pocion" ->
+                "\u2697\uFE0F";
+            case "trampa" ->
+                "\uD83D\uDCA3";
+            case "libro" ->
+                "\uD83D\uDCD5";
+            case "herramienta" ->
+                "\uD83D\uDEE0\uFE0F";
+            case "bandera" ->
+                "\uD83D\uDEA9";
+            case "gema" ->
+                "\uD83D\uDC8E";
+            default ->
+                "";
+        };
+    }
 
     private static String obtenerColorLugar(String tipo) {
         return switch (tipo.toLowerCase()) {
@@ -133,15 +148,15 @@ public class GeneradorMapa {
                 "gold";
             case "jungla" ->
                 "forestgreen";
-            case "montaña" ->
+            case "montana" ->
                 "sienna";
             case "pueblo" ->
                 "burlywood";
             case "isla" ->
                 "lightgoldenrod";
-            case "río" ->
+            case "rio" ->
                 "deepskyblue";
-            case "volcán" ->
+            case "volcan" ->
                 "orangered";
             case "pantano" ->
                 "darkseagreen";
@@ -164,7 +179,7 @@ public class GeneradorMapa {
                 "dashed";
             case "lancha" ->
                 "solid";
-            case "teleférico" ->
+            case "teleferico" ->
                 "dotted";
             default ->
                 "solid";
@@ -185,7 +200,7 @@ public class GeneradorMapa {
                 "deepskyblue";
             case "lancha" ->
                 "blue";
-            case "teleférico" ->
+            case "teleferico" ->
                 "purple";
             default ->
                 "black";
@@ -200,9 +215,9 @@ public class GeneradorMapa {
                 "pentagon";
             case "arma" ->
                 "diamond";
-            case "objeto mágico" ->
+            case "objeto magico" ->
                 "component";
-            case "poción" ->
+            case "pocion" ->
                 "cylinder";
             case "trampa" ->
                 "hexagon";
@@ -227,9 +242,9 @@ public class GeneradorMapa {
                 "lightsteelblue";
             case "arma" ->
                 "orangered";
-            case "objeto mágico" ->
+            case "objeto magico" ->
                 "violet";
-            case "poción" ->
+            case "pocion" ->
                 "plum";
             case "trampa" ->
                 "crimson";
