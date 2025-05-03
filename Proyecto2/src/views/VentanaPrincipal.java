@@ -235,6 +235,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             for (parser.Token err : analizadorLex.getErrores()) {
                 System.err.println(err);
             }
+            lblImagenMapa.setIcon(null);
+            lblImagenMapa.setText("Mapa no cargado");
+            mundosAnalizados.clear();
+            comboMapas.removeAllItems();
             return;
         }
 

@@ -264,7 +264,9 @@ public class AnalizadorSintactico {
             sincronizarSentencia();
             return null;
         }
-        String tipo = extraerLexema(TipoToken.IDENTIFICADOR);
+        String tipoBruto = extraerLexema(TipoToken.IDENTIFICADOR);
+        String tipo = tipoBruto.equalsIgnoreCase("objeto-magico") || tipoBruto.equalsIgnoreCase("objeto_magico")
+                ? "objeto magico" : tipoBruto;
 
         // AT
         if (!verificaActual(TipoToken.AT)) {

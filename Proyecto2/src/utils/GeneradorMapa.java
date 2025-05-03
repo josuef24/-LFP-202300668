@@ -26,8 +26,8 @@ public class GeneradorMapa {
             writer.println("    layout=neato;");
             writer.println("    overlap=false;");
             writer.println("    splines=true;");
-            writer.println("    size=\"8.3 ,8.3\";"); // Tamaño máximo en pulgadas (ancho, alto)
-            writer.println("    dpi=180;");      // Resolución para mejor control de calidad
+           // writer.println("    size=\"11 ,11\";"); // Tamaño máximo en pulgadas (ancho, alto)
+           // writer.println("    dpi=120;");      // Resolución para mejor control de calidad
             writer.println("    node [style=filled];");
 
             writer.println("    node [style=filled];");

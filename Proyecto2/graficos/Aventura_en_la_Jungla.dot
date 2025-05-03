@@ -2,8 +2,6 @@ digraph "Aventura en la Jungla" {
     layout=neato;
     overlap=false;
     splines=true;
-    size="8.3 ,8.3";
-    dpi=180;
     node [style=filled];
     node [style=filled];
     "Entrada" [shape=parallelogram, fillcolor=forestgreen, pos="0,0!"];

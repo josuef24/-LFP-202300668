@@ -145,7 +145,7 @@ public class AnalizadorLexico {
 
         int inicioCol = columna;
 
-        while (!estaAlFinal() && (Character.isLetterOrDigit(peek()) || peek() == '_')) {
+        while (!estaAlFinal() && (Character.isLetterOrDigit(peek()) || peek() == '_' || peek() == '-')) {
             palabra.append(avanzar());
             columna++;
         }
@@ -174,6 +174,9 @@ public class AnalizadorLexico {
                 break;
             case "at":
                 agregarToken(TipoToken.AT, lex);
+                break;
+            case "objeto magico":
+                agregarToken(TipoToken.IDENTIFICADOR, "objeto magico");
                 break;
             default:
                 agregarToken(TipoToken.IDENTIFICADOR, lex);

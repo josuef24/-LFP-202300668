@@ -1,0 +1,26 @@
+digraph "Expedicion Volcanica" {
+    layout=neato;
+    overlap=false;
+    splines=true;
+    node [style=filled];
+    node [style=filled];
+    "Base" [shape=doublecircle, fillcolor=orangered, pos="0,0!"];
+    "Pantano" [shape=trapezium, fillcolor=darkseagreen, pos="100,200!"];
+    "Jungla" [shape=parallelogram, fillcolor=forestgreen, pos="200,400!"];
+    "TemploAntiguo" [shape=octagon, fillcolor=gold, pos="400,300!"];
+    "RioProfundo" [shape=hexagon, fillcolor=deepskyblue, pos="100,100!"];
+    "CuevaOculta" [shape=box, fillcolor=gray, pos="500,0!"];
+    "Base" -> "Pantano" [label="nado", style=dashed, color=deepskyblue];
+    "Pantano" -> "Jungla" [label="sendero", style=dashed, color=saddlebrown];
+    "Jungla" -> "TemploAntiguo" [label="puente", style=dotted, color=gray];
+    "TemploAntiguo" -> "CuevaOculta" [label="camino", style=solid, color=black];
+    "RioProfundo" -> "Base" [label="carretera", style=solid, color=darkgray];
+    "CuevaOculta" -> "RioProfundo" [label="teleferico", style=dotted, color=purple];
+    "obj_💎_Gema_azul" [label="💎 Gema azul", shape=egg, fillcolor=deepskyblue, pos="400,200!", style=filled];
+    "obj_🗡️_Arma_legendaria" [label="🗡️ Arma legendaria", shape=diamond, fillcolor=orangered];
+    "obj_🗡️_Arma_legendaria" -> "Jungla" [label="en", style=dotted];
+    "obj_🚩_Bandera_de_conquista" [label="🚩 Bandera de conquista", shape=tab, fillcolor=white];
+    "obj_🚩_Bandera_de_conquista" -> "TemploAntiguo" [label="en", style=dotted];
+    "obj_🛠️_Herramienta_rota" [label="🛠️ Herramienta rota", shape=folder, fillcolor=darkkhaki];
+    "obj_🛠️_Herramienta_rota" -> "CuevaOculta" [label="en", style=dotted];
+}

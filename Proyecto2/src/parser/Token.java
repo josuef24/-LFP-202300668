@@ -22,3 +22,7 @@ public class Token {
         return tipo + " → \"" + lexema + "\" (línea " + linea + ", col " + columna + ")";
     }
 }
+
+
+
+
